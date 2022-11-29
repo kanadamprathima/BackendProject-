@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       ride.belongsTo(models.user, { foreignKey: "userId" });
     }
   }
@@ -19,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       droplat: { type: DataTypes.FLOAT, allowNull: false },
       droplong: { type: DataTypes.FLOAT, allowNull: false },
       amount: { type: DataTypes.INTEGER, allowNull: false },
+      startTime: { type: DataTypes.DATE },
     },
     {
       sequelize,

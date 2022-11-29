@@ -28,6 +28,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      startTime: {
+        type: Sequelize.DATE,
+      },
       userId: {
         type: Sequelize.INTEGER,
         references: {
