@@ -15,7 +15,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
-    const rideById = await Ride.findByPk(id);
+    const rideById = await Ride.findByPk(id, { include: User });
     if (rideById) {
       res.send(rideById);
     } else {
@@ -57,5 +57,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
     next(e.message);
   }
 });
+
+//delete your ride
 
 module.exports = router;

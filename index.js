@@ -4,6 +4,7 @@ const corsMiddleWare = require("cors");
 const User = require("./models").user;
 const Ride = require("./models").ride;
 const rideRouter = require("./routers/rideRouter");
+const authMiddleware = require("./auth/middleware");
 //routers
 const authRouter = require("./routers/auth");
 
@@ -34,6 +35,37 @@ app.get("/users", async (req, res, next) => {
     next(e);
   }
 });
+//delete new ride
+app.delete(
+  "/users/:userId/rides/:rideId",
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      // const rider = await User.findOne({
+      //   where: { id: req.user.id },
+      // });
+      // console.log("rider from server", rider);
+      const rideId = parseInt(req.params.rideId);
+      const toDelete = await Ride.findByPk(rideId);
+
+      if (!toDelete) {
+        res.status(404).send("ride not found");
+      }
+
+      if (toDelete.userId !== req.user.id) {
+        res.status(404).send("not an authorized rider to delete this");
+      }
+
+      // console.log("todeleteride", toDelete.userId);
+      // console.log("check condition", req.user.id === toDelete.userId);
+      // console.log("user auth id", req.user.id);
+      const deleted = await toDelete.destroy();
+      res.json(deleted);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
 
 //start listening
 app.listen(PORT, () => {

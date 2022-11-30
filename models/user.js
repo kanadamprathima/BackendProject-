@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM,
         allowNull: false,
         values: ["active", "pending", "deleted"],
+        defaultValue: "pending",
       },
     },
     {
