@@ -1,6 +1,9 @@
 //packages
 const express = require("express");
-const corsMiddleWare = require("cors");
+const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
+
 const User = require("./models").user;
 const Ride = require("./models").ride;
 const rideRouter = require("./routers/rideRouter");
@@ -18,7 +21,7 @@ const app = express();
 // CORS middleware:  * Since our api is hosted on a different domain than our client
 // we are are doing "Cross Origin Resource Sharing" (cors)
 // Cross origin resource sharing is disabled by express by default
-app.use(corsMiddleWare());
+app.use(cors());
 
 // express.json() to be able to read request bodies of JSON requests a.k.a. body-parser
 app.use(express.json());
@@ -27,6 +30,26 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/rides", rideRouter);
 app.use("/userRides", userrideRouter);
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`user connected:${socket.id}`);
+
+  socket.on("join_room", (data) => {
+    socket.join(data);
+  });
+
+  socket.on("send_msg", (data) => {
+    console.log(data);
+    socket.to(data.room).emit("receive_msg", data);
+  });
+});
 
 app.get("/users", async (req, res, next) => {
   try {
@@ -70,6 +93,6 @@ app.delete(
 );
 
 //start listening
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
