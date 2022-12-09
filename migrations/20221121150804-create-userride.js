@@ -11,6 +11,30 @@ module.exports = {
       address: {
         type: Sequelize.STRING,
       },
+      status: {
+        type: Sequelize.ENUM,
+        values: ["accept", "pending", "Reject"],
+        defaultValue: "pending",
+      },
+
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onUpdate: "CASCADE", // when the id changes
+        onDelete: "SET NULL",
+      },
+      rideId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "rides",
+          key: "id",
+        },
+        onUpdate: "CASCADE", // when the id changes
+        onDelete: "SET NULL",
+      },
 
       createdAt: {
         allowNull: false,

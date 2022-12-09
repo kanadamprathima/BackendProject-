@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       ride.belongsTo(models.user, { foreignKey: "userId" });
+      ride.belongsToMany(models.user, {
+        through: "userride",
+        foreignKey: "rideId",
+      });
     }
   }
   ride.init(

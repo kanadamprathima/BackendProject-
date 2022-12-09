@@ -4,6 +4,7 @@ const corsMiddleWare = require("cors");
 const User = require("./models").user;
 const Ride = require("./models").ride;
 const rideRouter = require("./routers/rideRouter");
+const userrideRouter = require("./routers/userRideRouter");
 const authMiddleware = require("./auth/middleware");
 //routers
 const authRouter = require("./routers/auth");
@@ -25,6 +26,7 @@ app.use(express.json());
 //routes
 app.use("/auth", authRouter);
 app.use("/rides", rideRouter);
+app.use("/userRides", userrideRouter);
 
 app.get("/users", async (req, res, next) => {
   try {

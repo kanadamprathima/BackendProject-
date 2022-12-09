@@ -10,11 +10,19 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // userride.belongsTo(models.user);
+      userride.belongsTo(models.ride);
+      userride.belongsTo(models.user);
     }
   }
   userride.init(
     {
       address: DataTypes.STRING,
+      status: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: ["accept", "pending", "Reject"],
+        defaultValue: "pending",
+      },
     },
     {
       sequelize,

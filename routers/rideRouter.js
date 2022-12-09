@@ -58,6 +58,12 @@ router.post("/", authMiddleware, async (req, res, next) => {
   }
 });
 
-//delete your ride
+//join-ride
+//POST request -> rideId (ride you want to join), userId(user making the request), address (where to pick up user)
+//userRides.create()
+
+//accept or reject rides
+//PATCH/PUT request -> requestId, new status (accepted or rejected)
+//If accepted or rejected -> send an email (use nodemailer for email)
 
 module.exports = router;
